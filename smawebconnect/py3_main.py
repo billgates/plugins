@@ -109,12 +109,16 @@ class SMAWebConnect(object):
                                        'description': 'PV power',
                                        'unit': 'W', 'type': 'gauge',
                                        'factor': 1.0},
-                     '6380_40451F00': {'name': 'pv_voltage',
-                                       'description': 'PV voltage (average of all PV channels)',
+                     '6380_40251E00': {'name': 'pv_power_detail',
+                                       'description': 'PV power',
+                                       'unit': 'W', 'type': 'gauge',
+                                       'factor': 1.0},
+                     '6380_40451F00': {'name': 'pv_voltage_detail',
+                                       'description': 'PV voltage',
                                        'unit': 'V', 'type': 'gauge',
                                        'factor': 100.0},
-                     '6380_40452100': {'name': 'pv_current',
-                                       'description': 'PV current (average of all PV channels)',
+                     '6380_40452100': {'name': 'pv_current_detail',
+                                       'description': 'PV current',
                                        'unit': 'A', 'type': 'gauge',
                                        'factor': 1000.0},
                      '6400_0046C300': {'name': 'pv_gen_meter',
@@ -234,7 +238,7 @@ class SMAWebConnect(object):
                 else:
                     self._log_debug('* {0}:'.format(name))
                     for value in values:
-                        self._log_debug('    {0}{1}'.format(description, unit if value is not None else ''))
+                        self._log_debug('    {0}: {1}{2}'.format(description, value, unit if value is not None else ''))
                     values = [value for value in values
                               if value is not None]
                     if len(values) == 1:
