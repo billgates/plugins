@@ -1,4 +1,4 @@
-#!./venv/bin/python3
+#!/Users/carl/prive/sma/plugins/smawebconnect/venv/bin/python3/
 
 # Copyright (C) 2020 OpenMotics BV
 #
@@ -328,10 +328,14 @@ def create_logger():
 
 
 if __name__ == '__main__':
-    ip = '192.168.0.230'
-    with open('passwd.txt', 'r') as f:
-        password = f.read().strip()
+    import __main__
+    module_path = os.path.realpath(__main__.__file__)
+    base_path = os.path.dirname(module_path)
+    with open(os.path.join(base_path, 'config.json'), 'r') as f:
+        config = json.load(f)
+        ip = config['ip']
+        password = config['password']
     logger = create_logger()
-    sid_persister = SIDPersister('sids.json', logger)
+    sid_persister = SIDPersister(os.path.join(base_path, 'sids.json'), logger)
     plugin = SMAWebConnect(ip, password, logger, sid_persister)
     plugin.run()
