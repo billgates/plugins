@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import time
 import logging
 import json
@@ -29,6 +30,8 @@ class SIDPersister(object):
         self.logger = logger
 
     def get(self):
+        if not os.path.exists(self.path):
+            return None
         try:
             with open(self.path, 'r') as f:
                 sid = json.load(f)['sid']
@@ -326,8 +329,9 @@ def create_logger():
 
 if __name__ == '__main__':
     ip = '192.168.0.230'
-    password = 'SMA123smak!!'
+    with open('passwd.txt', 'r') as f:
+        password = f.read().strip()
     logger = create_logger()
-    sid_persister = SIDPersister('/tmp/sids.json', logger)
+    sid_persister = SIDPersister('sids.json', logger)
     plugin = SMAWebConnect(ip, password, logger, sid_persister)
     plugin.run()
